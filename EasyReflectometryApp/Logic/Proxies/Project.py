@@ -8,14 +8,12 @@ from PySide2.QtCore import QObject, Signal, Property, Slot
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import matplotlib.backends.backend_pdf
 
 from easyCore import np
 from easyApp.Logic.Utils.Utils import generalizePath
 
 from EasyReflectometryApp.Logic.DataStore import DataSet1D
-from EasyReflectometry.sample.materials import Materials
-from EasyReflectometry.experiment.model import Model
+from EasyReflectometry.sample import MaterialCollection
 from EasyReflectometry.experiment.models import Models
 
 
@@ -152,7 +150,7 @@ class ProjectProxy(QObject):
         project_save_filepath = os.path.join(projectPath, 'project.json')
         materials_in_model = []
         for i in self.parent._model_proxy._model:
-            for j in i.structure:
+            for j in i.sample:
                 for k in j.layers:
                     materials_in_model.append(k.material)
         materials_not_in_model = []
@@ -163,7 +161,7 @@ class ProjectProxy(QObject):
             'model':
                 self.parent._model_proxy._model.as_dict(skip=['interface']),
             'materials_not_in_model':
-                Materials(*materials_not_in_model).as_dict(skip=['interface'])
+                MaterialCollection(*materials_not_in_model).as_dict(skip=['interface'])
         }
 
         if self.parent._data_proxy._data.experiments:
@@ -231,15 +229,15 @@ class ProjectProxy(QObject):
 
         self.parent._model_proxy._colors = descr['colors']
         self.parent._model_proxy._model = Models.from_dict(descr['model'])
-        self.parent._material_proxy._materials = Materials.from_pars()
+        self.parent._material_proxy._materials = MaterialCollection.from_pars()
         for model in self.parent._model_proxy._model:
-            for structure in model.structure:
+            for structure in model.sample:
                 for layer in structure.layers:
                     self.parent._material_proxy._materials.append(layer.material)
             model.interface = self.parent._interface
         mats = descr['materials_not_in_model']
         if mats['data']:
-            for material in Materials.from_dict(mats):
+            for material in MaterialCollection.from_dict(mats):
                 self.parent._material_proxy._materials.append(material)
 
         # experiment

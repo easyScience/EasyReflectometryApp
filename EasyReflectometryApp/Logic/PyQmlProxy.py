@@ -2,7 +2,7 @@ __author__ = 'github.com/arm61'
 
 from PySide2.QtCore import QObject, Signal, Property
 
-from EasyReflectometry.interface import InterfaceFactory
+from EasyReflectometry.calculators import CalculatorFactory
 
 from .Proxies.Calculator import CalculatorProxy
 from .Proxies.Data import DataProxy
@@ -30,7 +30,7 @@ class PyQmlProxy(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self._interface = InterfaceFactory()
+        self._interface = CalculatorFactory()
 
         # Proxies
         self._project_proxy = ProjectProxy(self)

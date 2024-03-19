@@ -7,8 +7,8 @@ from PySide2.QtCore import QObject, Signal, Property, Slot
 from easyCore import borg
 from easyCore.Utils.io.xml import XMLSerializer
 
-from EasyReflectometry.sample.material import Material
-from EasyReflectometry.sample.materials import Materials
+from EasyReflectometry.sample import Material
+from EasyReflectometry.sample import MaterialCollection
 
 COLOURMAP = cm.get_cmap('Blues', 100)
 MIN_SLD = -3
@@ -36,15 +36,17 @@ class MaterialProxy(QObject):
     # Defaults
     # # #
 
-    def _defaultMaterials(self) -> Materials:
+    def _defaultMaterials(self) -> MaterialCollection:
         """
         Default materials for EasyReflecometry.
         
         :return: Three materials; Air, D2O and Si.
         """
-        return Materials(Material.from_pars(0., 0., name='Air'),
-                         Material.from_pars(6.335, 0., name='D2O'),
-                         Material.from_pars(2.074, 0., name='Si'))
+        return MaterialCollection(
+            Material.from_pars(0., 0., name='Air'),
+            Material.from_pars(6.335, 0., name='D2O'),
+            Material.from_pars(2.074, 0., name='Si')
+        )
 
     # # #
     # Setters and getters
