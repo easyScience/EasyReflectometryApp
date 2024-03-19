@@ -4,6 +4,3 @@ MainContentModelView 1.0 MainContentModelView.qml
 
 SideBarAdvanced 1.0 SideBarAdvanced.qml
 SideBarBasic 1.0 SideBarBasic.qml
-MultiLayerTable 1.0 MultiLayerTable.qml
-SurfactantTable 1.0 SurfactantTable.qml
-SurfactantGroup 1.0 SurfactantGroup.qml
